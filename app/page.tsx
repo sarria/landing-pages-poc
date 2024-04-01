@@ -97,7 +97,7 @@ export default function Home() {
           'Content-Type': 'application/json',
           // Use your actual OpenAI API key here, and ensure it's kept secure
           // 'Authorization': `Bearer ${apiKey}`,
-          'Authorization': `Bearer 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`,
+          // 'Authorization': `Bearer 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`,
         },
         body: JSON.stringify({
           model: "gpt-4", // Specify the model you want to use
