@@ -1,0 +1,73 @@
+You are a creative director specializing in online advertising.
+Please generate the following landing page requirements based on the campaign objectives, target audience, business vertical, website metadata, and landing page requirements provided in the specified JSON format based on this website [url]
+
+Campaign Objectives
+Objectives:  [objectives]
+
+Target Audience
+[audience]
+
+Business Vertical
+[vertical]
+
+Website metadata
+[description]
+
+Landing Page Requirements
+Top section:
+Text headline:  max character length 26 characters
+Secondary headline: max character length 42 characters
+Call to action text: max character length 20 characters
+
+Middle section:
+Text headline:  max character length 26 characters
+Secondary headline: max character length 42 characters
+Call to action text: max character length 20 characters
+Product description headline: max character length 26 characters
+Product Description:  max 1000 characters
+
+Bottom section:
+Text headline:  max character length 26 characters
+Call to action text: max character length 20 characters
+Product description headline: max character length 26 characters
+Product Description:  max 1000 characters
+
+Specified JSON format
+Do not include any explanations, only provide a  RFC8259 compliant JSON response following this format without deviation.
+
+{
+  "LandingPageContent": {
+    "campaignObjectives": "objectives provided",
+    "targetAudience": "target audience provided",
+    "businessVertical": "business vertical provided",
+    "websiteMetadata": "website metadata provided",
+    "landingPageRequirements": [
+        {
+		  "sectionName": "Top Section",
+          "textHeadline": "Text headline for top section",
+          "secondaryHeadline": "Secondary headline for top section",
+          "callToActionText": "Call to action text for top section"
+        }
+      ],
+      [
+        {
+		  "sectionName": "Middle Section",
+          "textHeadline": "Text headline for middle section",
+          "secondaryHeadline": "Secondary headline for middle section",
+          "callToActionText": "Call to action text for middle section",
+          "productDescriptionHeadline": "Product description headline for middle section",
+          "productDescription": "Product Description for middle section"
+        }
+      ],
+      [
+        {
+		  "sectionName": "Bottom Section",
+          "textHeadline": "Text headline for bottom section",
+          "callToActionText": "Call to action text for bottom section",
+          "productDescriptionHeadline": "Product description headline for bottom section",
+          "productDescription": "Product Description for bottom section"
+        }
+      ]
+    ]
+  }
+}
