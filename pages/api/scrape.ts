@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import chromium from 'chrome-aws-lambda';
-import puppeteer from 'puppeteer-core';
+// import puppeteer from 'puppeteer-core';
 
 // interface DataResponse {
 //   title: string;
@@ -29,12 +29,20 @@ export default async function handler(
     }
 
     try {
-      const browser = await puppeteer.launch({
-        executablePath: await chromium.executablePath,
-        args: chromium.args,
+      // const browser = await puppeteer.launch({
+      //   executablePath: await chromium.executablePath,
+      //   args: chromium.args,
+      //   defaultViewport: chromium.defaultViewport,
+      //   headless: chromium.headless,
+      // });
+
+      const browser = await chromium.puppeteer.launch({
+        args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
         defaultViewport: chromium.defaultViewport,
-        headless: chromium.headless,
-      });
+        executablePath: await chromium.executablePath,
+        headless: true,
+        ignoreHTTPSErrors: true,
+      })      
       
       const page = await browser.newPage();
       await page.goto(url, { waitUntil: 'domcontentloaded' });
