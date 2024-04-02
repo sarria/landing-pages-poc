@@ -24,7 +24,6 @@ export default function Home() {
     vertical: ''
   });
   const [chatGptResponse, setChatGptResponse] = useState(null);
-  // const [landingPageContent, setLandingPageContent] = useState({landingPageRequirements:[]});
   const [landingPageContent, setLandingPageContent] = useState<LandingPageContent | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   // const [prompt, setPrompt] = useState('');
@@ -65,7 +64,7 @@ export default function Home() {
 
     // setPrompt('');
     // setChatGptResponse(null);
-    setLandingPageContent({landingPageRequirements:[]});
+    setLandingPageContent(null);
   
     const formData = new FormData(event.currentTarget);
     const formProps: { [key: string]: FormDataEntryValue } = Object.fromEntries(formData);
@@ -96,9 +95,9 @@ export default function Home() {
       const result = await res.json();
       
       console.log("result from chatGpt API >>> ", result)
-      const LandingPageContent = JSON.parse(result.choices[0]?.message.content).LandingPageContent;
-      console.log("LandingPageContent >>> ", LandingPageContent);
-      setLandingPageContent(LandingPageContent);
+      const pageContent = JSON.parse(result.choices[0]?.message.content).LandingPageContent;
+      console.log("LandingPageContent >>> ", pageContent);
+      setLandingPageContent(pageContent);
 
     } catch (error) {
       console.error("Error submitting to ChatGPT:", error);

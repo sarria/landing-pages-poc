@@ -83,7 +83,7 @@ export default async function handler(
 		const result = await response.json();
 		res.status(200).json(result);
     } catch (error) {
-		res.status(500).json({ error: "Failed to process with ChatGPT: " + error.message });
+		res.status(500).json({ error: "Failed to process with ChatGPT: " + (error as Error).message });	
     }
   } else {
 	res.setHeader('Allow', ['POST']);
