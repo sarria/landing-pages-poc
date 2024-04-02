@@ -15,7 +15,7 @@ export default function Home() {
     vertical: ''
   });
   const [chatGptResponse, setChatGptResponse] = useState(null);
-  const [landingPageContent, setLandingPageContent] = useState(null);
+  const [landingPageContent, setLandingPageContent] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   // const [prompt, setPrompt] = useState('');
 
@@ -55,7 +55,7 @@ export default function Home() {
 
     // setPrompt('');
     // setChatGptResponse(null);
-    setLandingPageContent(null);
+    setLandingPageContent({});
   
     const formData = new FormData(event.currentTarget);
     const formProps: { [key: string]: FormDataEntryValue } = Object.fromEntries(formData);
@@ -197,7 +197,7 @@ export default function Home() {
 
       {isLoading && <p>Loading...</p>}
 
-      {landingPageContent && (
+      {landingPageContent.landingPageRequirements && (
         <div>
           <h2>ChatGPT Response:</h2>
           <textarea>{JSON.stringify(landingPageContent)}</textarea>
