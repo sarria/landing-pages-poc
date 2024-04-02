@@ -19,22 +19,22 @@ export type DataResponse = {
 
 const getBrowserOptions = async () => {
   console.log("process.platform", process.platform, chromium.headless)
-  return process.env.NODE_ENV === 'production'
+  return process.env.ENVIRONMENT === 'local'
     ? {
-          args: chromium.args,
-          executablePath: await chromium.executablePath(process.env.CHROMIUM_PATH),
-          headless: chromium.headless,
-          ignoreHTTPSErrors: true,          
+        args: chromium.args,
+        executablePath:
+            process.platform === 'win32'
+                ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
+                : process.platform === 'linux'
+                ? '/usr/bin/google-chrome'
+                : '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+        headless: true, // This is already a boolean
       }
     : {
-          args: chromium.args,
-          executablePath:
-              process.platform === 'win32'
-                  ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
-                  : process.platform === 'linux'
-                  ? '/usr/bin/google-chrome'
-                  : '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-          headless: true, // This is already a boolean
+        args: chromium.args,
+        executablePath: await chromium.executablePath(process.env.CHROMIUM_PATH),
+        headless: chromium.headless,
+        ignoreHTTPSErrors: true,          
       }
 }
 
@@ -85,8 +85,7 @@ export default async function handler(
         metaTags
       });
     } catch (error) {
-      console.error("Error fetching page data: " + (error as Error).message );
-      res.status(500).json({ error: "Failed to fetch the URL: " + (error as Error).message });
+      res.status(500).json({ error: "Failed to fetch the URL:\n" + (error as Error).message });
     }
   } else {
     res.setHeader('Allow', ['POST']);
