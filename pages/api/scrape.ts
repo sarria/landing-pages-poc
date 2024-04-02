@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
+import chromium from 'chrome-aws-lambda';
 
 // interface DataResponse {
 //   title: string;
@@ -28,7 +29,13 @@ export default async function handler(
     }
 
     try {
-      const browser = await puppeteer.launch();
+      const browser = await puppeteer.launch({
+        executablePath: await chromium.executablePath,
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        headless: chromium.headless,
+      });
+      
       const page = await browser.newPage();
       await page.goto(url, { waitUntil: 'domcontentloaded' });
       const title = await page.title();
