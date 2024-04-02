@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import chromium from 'chrome-aws-lambda';
+// import chromium from 'chrome-aws-lambda';
 // import puppeteer from 'puppeteer-core';
+import chromium from '@sparticuz/chromium'
 
 // interface DataResponse {
 //   title: string;
@@ -36,13 +37,26 @@ export default async function handler(
       //   headless: chromium.headless,
       // });
 
-      const browser = await chromium.puppeteer.launch({
-        args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
-        defaultViewport: chromium.defaultViewport,
-        executablePath: await chromium.executablePath,
-        headless: true,
-        ignoreHTTPSErrors: true,
-      })      
+      // const browser = await chromium.puppeteer.launch({
+      //   args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+      //   defaultViewport: chromium.defaultViewport,
+      //   executablePath: await chromium.executablePath,
+      //   headless: true,
+      //   ignoreHTTPSErrors: true,
+      // })   
+      
+      // let browser: Browser | undefined | null
+      
+          const chromium = require('@sparticuz/chromium')
+          // Optional: If you'd like to disable webgl, true is the default.
+          chromium.setGraphicsMode = false
+          const puppeteer = require('puppeteer-core')
+          let browser = await puppeteer.launch({
+              args: chromium.args,
+              defaultViewport: chromium.defaultViewport,
+              executablePath: await chromium.executablePath(),
+              headless: chromium.headless,
+          })      
       
       const page = await browser.newPage();
       await page.goto(url, { waitUntil: 'domcontentloaded' });
