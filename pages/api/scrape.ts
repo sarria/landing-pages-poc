@@ -18,10 +18,17 @@ const getBrowserOptions = async () => {
   console.log("process.platform", process.platform, chromium.headless)
   return process.env.NODE_ENV === 'production'
     ? {
-          args: chromium.args,
-          executablePath: await chromium.executablePath(process.env.CHROMIUM_PATH),
-          headless: true, //chromium.headless, // Ensure this is always boolean
-          ignoreHTTPSErrors: true,
+          // args: chromium.args,
+          // executablePath: await chromium.executablePath(process.env.CHROMIUM_PATH),
+          // headless: true, //chromium.headless, // Ensure this is always boolean
+          // ignoreHTTPSErrors: true,
+          args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
+          defaultViewport: chromium.defaultViewport,
+          executablePath: await chromium.executablePath(
+            `https://github.com/Sparticuz/chromium/releases/download/v116.0.0/chromium-v116.0.0-pack.tar`
+          ),
+          headless: chromium.headless,
+          ignoreHTTPSErrors: true,          
       }
     : {
           args: chromium.args,
