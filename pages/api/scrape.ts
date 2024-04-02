@@ -57,7 +57,7 @@ export default async function handler(
         metaTags
       });
     } catch (error) {
-      console.error('Error fetching page data:', error);
+      console.error("Error fetching page data: " + (error as Error).message );
       res.status(500).json({ error: "Failed to fetch the URL: " + (error as Error).message });
     }
   } else {
