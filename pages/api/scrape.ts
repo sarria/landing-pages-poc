@@ -15,7 +15,7 @@ export type DataResponse = {
 };
 
 const getBrowserOptions = async () => {
-  console.log("process.platform", process.platform)
+  console.log("process.platform", process.platform, chromium.headless)
   return process.env.NODE_ENV === 'production'
     ? {
           args: chromium.args,
