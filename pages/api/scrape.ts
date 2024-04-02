@@ -2,8 +2,11 @@ import { NextApiRequest, NextApiResponse } from 'next';
 // import chromium from 'chrome-aws-lambda';
 // import puppeteer from 'puppeteer-core';
 // import chromium from '@sparticuz/chromium'
-import chromium from '@sparticuz/chromium-min'
-import puppeteer from 'puppeteer-core'
+
+// import chromium from '@sparticuz/chromium-min'
+// import puppeteer from 'puppeteer-core'
+const chromium = require('@sparticuz/chromium-min');
+const puppeteer = require('puppeteer-core');
 
 export type DataResponse = {
 	url?: string | null;
@@ -18,11 +21,8 @@ const getBrowserOptions = async () => {
   console.log("process.platform", process.platform, chromium.headless)
   return process.env.NODE_ENV === 'production'
     ? {
-          // args: chromium.args,
+          args: chromium.args,
           // executablePath: await chromium.executablePath(process.env.CHROMIUM_PATH),
-          // headless: true, //chromium.headless, // Ensure this is always boolean
-          // ignoreHTTPSErrors: true,
-          args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
           defaultViewport: chromium.defaultViewport,
           executablePath: await chromium.executablePath(
             `https://github.com/Sparticuz/chromium/releases/download/v116.0.0/chromium-v116.0.0-pack.tar`
