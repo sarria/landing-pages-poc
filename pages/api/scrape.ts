@@ -22,11 +22,7 @@ const getBrowserOptions = async () => {
   return process.env.NODE_ENV === 'production'
     ? {
           args: chromium.args,
-          // executablePath: await chromium.executablePath(process.env.CHROMIUM_PATH),
-          defaultViewport: chromium.defaultViewport,
-          executablePath: await chromium.executablePath(
-            `https://github.com/Sparticuz/chromium/releases/download/v116.0.0/chromium-v116.0.0-pack.tar`
-          ),
+          executablePath: await chromium.executablePath(process.env.CHROMIUM_PATH),
           headless: chromium.headless,
           ignoreHTTPSErrors: true,          
       }
@@ -90,12 +86,7 @@ export default async function handler(
       });
     } catch (error) {
       console.error("Error fetching page data: " + (error as Error).message );
-      // res.status(500).json({ error: "Failed to fetch the URL: " + (error as Error).message });
-      res.status(200).json({
-        error: "Failed to fetch the URL: " + (error as Error).message,
-        url,
-        title: url
-      });      
+      res.status(500).json({ error: "Failed to fetch the URL: " + (error as Error).message });
     }
   } else {
     res.setHeader('Allow', ['POST']);
