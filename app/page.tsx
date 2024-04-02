@@ -4,8 +4,6 @@ import { useState } from 'react';
 import React, { FormEvent } from 'react';
 import { objectives, vertical, audience } from './options';
 
-require('dotenv').config();
-
 export default function Home() {
   const [url, setUrl] = useState('');
   const [variables, setVariables] = useState({
@@ -72,65 +70,29 @@ export default function Home() {
       vertical: formProps.vertical?.toString() || variables.vertical,
     };
   
-    console.log(data); 
-
     try {
-      const promptResponse = await fetch('/prompt.txt');
-      if (!promptResponse.ok) {
-        throw new Error(`Error fetching prompt: ${promptResponse.statusText}`);
-      }
-      const promptText = await promptResponse.text();
-      let prompt = promptText
-        .replaceAll("[url]", data.url)
-        .replaceAll("[description]", data.description)
-        .replaceAll("[objectives]", data.objectives)
-        .replaceAll("[audience]", data.audience)
-        .replaceAll("[vertical]", data.vertical)
-
-      console.log(prompt);
-      // setPrompt(prompt);
-
-      // const apiKey = process.env.OPENAI_API_KEY; 
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      const res = await fetch('/api/chatGpt', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          // Use your actual OpenAI API key here, and ensure it's kept secure
-          // 'Authorization': `Bearer ${apiKey}`,
-          // 'Authorization': `Bearer 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`,
         },
-        body: JSON.stringify({
-          model: "gpt-4", // Specify the model you want to use
-          messages: [
-            {
-              role: "user",
-              content: prompt
-            }
-          ],
-          // temperature: 0.7, // Adjust for creativity
-          // max_tokens: 256, // Adjust for length of completion
-          // top_p: 1.0,
-          // frequency_penalty: 0.0,
-          // presence_penalty: 0.0,
-        }),
+        body: JSON.stringify(data),
       });
-
-      if (!response.ok) {
-        // Handling HTTP errors
-        throw new Error(`HTTP error! status: ${response.status}`);
-      } else {
-        const result = await response.json();
-        console.log("result", result)
-        const LandingPageContent = JSON.parse(result.choices[0]?.message.content).LandingPageContent;
-        console.log("LandingPageContent", LandingPageContent);
-        // setChatGptResponse(content);
-        setLandingPageContent(LandingPageContent);
-        // return data; // This will be the JSON response from the OpenAI API
+      
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
       }
+      
+      const result = await res.json();
+      
+      console.log("result from chatGpt API >>> ", result)
+      const LandingPageContent = JSON.parse(result.choices[0]?.message.content).LandingPageContent;
+      console.log("LandingPageContent >>> ", LandingPageContent);
+      setLandingPageContent(LandingPageContent);
 
     } catch (error) {
-      console.error("Failed to process with ChatGPT", error);
-    }
+      console.error("Error submitting to ChatGPT:", error);
+    }    
 
     setIsLoading(false);
   };
