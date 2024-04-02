@@ -4,6 +4,15 @@ import { useState } from 'react';
 import React, { FormEvent } from 'react';
 import { objectives, vertical, audience } from './options';
 
+interface LandingPageRequirement {
+  [key: string]: any; // Ideally, specify a more precise type instead of any
+}
+
+interface LandingPageContent {
+  landingPageRequirements: LandingPageRequirement[];
+}
+
+
 export default function Home() {
   const [url, setUrl] = useState('');
   const [variables, setVariables] = useState({
@@ -15,7 +24,8 @@ export default function Home() {
     vertical: ''
   });
   const [chatGptResponse, setChatGptResponse] = useState(null);
-  const [landingPageContent, setLandingPageContent] = useState({landingPageRequirements:[]});
+  // const [landingPageContent, setLandingPageContent] = useState({landingPageRequirements:[]});
+  const [landingPageContent, setLandingPageContent] = useState<LandingPageContent | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   // const [prompt, setPrompt] = useState('');
 
@@ -97,16 +107,22 @@ export default function Home() {
     setIsLoading(false);
   };
 
-  const handleTextChange = (sectionIndex: string | number, key: string | number, value: any) => {
-    // Create a copy of the landingPageContent
-    const updatedContent = { ...landingPageContent };
-    
-    // Update the specific field in the section
-    updatedContent.landingPageRequirements[sectionIndex][key] = value;
-    
+  const handleTextChange = (sectionIndex: number, key: string, value: any) => {
+    // Ensure landingPageContent is not null
+    if (!landingPageContent) return;
+  
+    // Deep clone or create a new updated object in an immutable way
+    const updatedContent: LandingPageContent = {
+      ...landingPageContent,
+      landingPageRequirements: landingPageContent.landingPageRequirements.map((requirement, index) =>
+        index === sectionIndex ? { ...requirement, [key]: value } : requirement
+      ),
+    };
+  
     // Set the updated object back to state
     setLandingPageContent(updatedContent);
   };
+ 
 
   return (
     <div>
@@ -197,7 +213,7 @@ export default function Home() {
 
       {isLoading && <p>Loading...</p>}
 
-      {landingPageContent.landingPageRequirements && (
+      {landingPageContent?.landingPageRequirements && (
         <div>
           <h2>ChatGPT Response:</h2>
           <textarea>{JSON.stringify(landingPageContent)}</textarea>
