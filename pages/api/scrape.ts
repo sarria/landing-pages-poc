@@ -58,7 +58,7 @@ export default async function handler(
       });
     } catch (error) {
       console.error('Error fetching page data:', error);
-      res.status(500).json({ error: "Failed to fetch the URL" });
+      res.status(500).json({ error: "Failed to fetch the URL: " + (error as Error).message });
     }
   } else {
     res.setHeader('Allow', ['POST']);
