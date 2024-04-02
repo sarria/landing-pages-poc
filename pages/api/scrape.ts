@@ -59,7 +59,8 @@ export default async function handler(
           })      
       
       const page = await browser.newPage();
-      await page.goto(url, { waitUntil: 'domcontentloaded' });
+      // await page.goto(url, { waitUntil: 'domcontentloaded' });
+      await page.goto(url, { waitUntil: 'networkidle2' });
       const title = await page.title();
 
       // Function to scroll to the bottom of the page
