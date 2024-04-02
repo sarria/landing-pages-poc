@@ -1,12 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 // import chromium from 'chrome-aws-lambda';
 // import puppeteer from 'puppeteer-core';
-import chromium from '@sparticuz/chromium'
-
-// interface DataResponse {
-//   title: string;
-//   description: string | null;
-// }
+// import chromium from '@sparticuz/chromium'
+import chromium from '@sparticuz/chromium-min'
+import puppeteer from 'puppeteer-core'
 
 export type DataResponse = {
 	url?: string | null;
@@ -16,6 +13,28 @@ export type DataResponse = {
     content?: string | null;
   }> | null;
 };
+
+const getBrowserOptions = async () => {
+  console.log("process.platform", process.platform)
+  return process.env.NODE_ENV === 'production'
+    ? {
+          args: chromium.args,
+          executablePath: await chromium.executablePath(process.env.CHROMIUM_PATH),
+          headless: true, //chromium.headless, // Ensure this is always boolean
+          ignoreHTTPSErrors: true,
+      }
+    : {
+          args: chromium.args,
+          executablePath:
+              process.platform === 'win32'
+                  ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
+                  : process.platform === 'linux'
+                  ? '/usr/bin/google-chrome'
+                  : '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+          headless: true, // This is already a boolean
+      }
+}
+
 
 export default async function handler(
   req: NextApiRequest,
@@ -30,37 +49,13 @@ export default async function handler(
     }
 
     try {
-      // const browser = await puppeteer.launch({
-      //   executablePath: await chromium.executablePath,
-      //   args: chromium.args,
-      //   defaultViewport: chromium.defaultViewport,
-      //   headless: chromium.headless,
-      // });
-
-      // const browser = await chromium.puppeteer.launch({
-      //   args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
-      //   defaultViewport: chromium.defaultViewport,
-      //   executablePath: await chromium.executablePath,
-      //   headless: true,
-      //   ignoreHTTPSErrors: true,
-      // })   
-      
-      // let browser: Browser | undefined | null
-      
-          const chromium = require('@sparticuz/chromium')
-          // Optional: If you'd like to disable webgl, true is the default.
-          chromium.setGraphicsMode = false
-          const puppeteer = require('puppeteer-core')
-          let browser = await puppeteer.launch({
-              args: chromium.args,
-              defaultViewport: chromium.defaultViewport,
-              executablePath: await chromium.executablePath(),
-              headless: chromium.headless,
-          })      
-      
+      const browserOptions = await getBrowserOptions()
+      const browser = await puppeteer.launch(browserOptions)
       const page = await browser.newPage();
       // await page.goto(url, { waitUntil: 'domcontentloaded' });
-      await page.goto(url, { waitUntil: 'networkidle2' });
+      // await page.goto(url, { waitUntil: 'networkidle2' });
+      await page.goto(url, { waitUntil: 'networkidle0' });
+
       const title = await page.title();
 
       // Function to scroll to the bottom of the page
