@@ -87,7 +87,7 @@ export default async function handler(
       res.status(200).json({
         error: "Failed to fetch the URL: " + (error as Error).message,
         url,
-        title: ''
+        title: url
       });      
     }
   } else {
