@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import puppeteer from 'puppeteer-core';
 import chromium from 'chrome-aws-lambda';
+import puppeteer from 'puppeteer-core';
 
 // interface DataResponse {
 //   title: string;
