@@ -18,7 +18,8 @@ const getBrowserOptions = async () => {
         args: chromium.args,
         executablePath:
             process.platform === 'win32'
-                ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
+                // ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
+                ? 'C:\\Users\\jauns\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe'
                 : process.platform === 'linux'
                 ? '/usr/bin/google-chrome'
                 : '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
