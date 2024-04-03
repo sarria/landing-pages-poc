@@ -1,12 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-// import chromium from 'chrome-aws-lambda';
-// import puppeteer from 'puppeteer-core';
-// import chromium from '@sparticuz/chromium'
-
-// import chromium from '@sparticuz/chromium-min'
-// import puppeteer from 'puppeteer-core'
-const chromium = require('@sparticuz/chromium-min');
-const puppeteer = require('puppeteer-core');
+import chromium from '@sparticuz/chromium-min'
+import puppeteer from 'puppeteer-core'
 
 export type DataResponse = {
 	url?: string | null;
