@@ -1,3 +1,5 @@
+// npm install --save @sparticuz/chromium-min@$CHROMIUM_VERSION
+
 import { NextApiRequest, NextApiResponse } from 'next';
 import chromium from '@sparticuz/chromium-min'
 import puppeteer from 'puppeteer-core'
